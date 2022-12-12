@@ -1,5 +1,7 @@
 package cz.cvut.fit.bioop.hackernewsclient
 
+import scala.Console.{MAGENTA, RESET}
+
 class Stories extends Item {
   val stories: List[Story] = List()
   override def displayItem(name: String): Unit = {
@@ -7,7 +9,7 @@ class Stories extends Item {
   }
 
   def getStories(name: String): List[Story] = {
-    println("First time fetching stories")
+    println(s"${MAGENTA}First time fetching stories$RESET")
     val response = scala.io.Source.fromURL(s"https://hacker-news.firebaseio.com/v0/$name.json")
     val responseStr = response.mkString
     response.close()
