@@ -31,7 +31,7 @@ object Main {
       println("4 - Ask stories")
       println("5 - Show stories")
       println("6 - Job stories")
-      println("7 - User info")
+      println("user - User profile")
       println("q - Quit")
       print(s"Choose an option: $RESET")
       input = readLine()
@@ -49,7 +49,7 @@ object Main {
         case s"5 ${commands}" => showstories.displayItem("showstories", commands.split(" "))
         case "6" => jobstories.displayItem("jobstories")
         case s"6 ${commands}" => jobstories.displayItem("jobstories", commands.split(" "))
-        case s"7 --${name}" => user.displayItem(name)
+        case s"user=${name}" => user.displayItem(name)
         case "q" => println("Bye!")
         case _ => println("Invalid option")
       }

@@ -2,11 +2,8 @@ package cz.cvut.fit.bioop.hackernewsclient
 
 import scala.Console.{MAGENTA, RESET}
 
-class UserInfo extends Item {
+class UserInfo {
   val user: User = User()
-  override def displayItem(name: String): Unit = {
-    println("User info")
-  }
 
   def getUserInfo(name: String): User = {
     println(s"${MAGENTA}First time fetching user info $RESET")

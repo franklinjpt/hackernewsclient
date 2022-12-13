@@ -1,10 +1,10 @@
 package cz.cvut.fit.bioop.hackernewsclient
 import scala.Console._
 
-class UserInfoProxy extends Item{
+class UserInfoProxy{
     val user = new UserInfo()
     var userInfo: List[User] = List()
-    override def displayItem(name: String): Unit = {
+    def displayItem(name: String): Unit = {
       if (userInfo.isEmpty || !userInfo.map(_.id).contains(name)) {
         userInfo = userInfo :+ user.getUserInfo(name)
       }

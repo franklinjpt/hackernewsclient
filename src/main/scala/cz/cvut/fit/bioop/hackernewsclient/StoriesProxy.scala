@@ -15,7 +15,6 @@ class StoriesProxy {
           }
         }).toMap
 
-    println("Command values: " + commandValues)
     if (storyList.isEmpty) {
       storyList = stories.getStories(name)
     }
