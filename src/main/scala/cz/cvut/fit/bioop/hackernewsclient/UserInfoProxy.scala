@@ -13,11 +13,18 @@ class UserInfoProxy extends Item{
           println("----------------------------------------")
           println(s"$YELLOW${user.id} $RESET")
           println(s"Description: $BLUE${user.about} $RESET")
-          println(s"Created at: $BLUE${user.created} $RESET")
+          println(s"Created at: $BLUE${unixTimeToDate(user.created)} $RESET")
           println(s"Karma: $BLUE${user.karma}$RESET")
           println(s"Submitted items: $BLUE${user.submitted.length}$RESET")
           println("")
         }
       })
     }
+
+  def unixTimeToDate(unixTime: Long): String = {
+    val date = new java.util.Date(unixTime * 1000L)
+    val sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+    sdf.setTimeZone(java.util.TimeZone.getTimeZone("GMT+2"))
+    sdf.format(date)
+  }
 }
