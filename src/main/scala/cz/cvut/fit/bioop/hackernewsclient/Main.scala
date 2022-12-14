@@ -32,7 +32,7 @@ object Main {
       println("5 - Show stories")
       println("6 - Job stories")
       println("7 - Clear cache")
-      println("user - User profile")
+      println("User - User profile")
       println("q - Quit")
       print(s"Choose an option: $RESET")
       input = readLine()
@@ -55,7 +55,7 @@ object Main {
                     beststories.storyList = List()
                     askstories.storyList = List()
                     showstories.storyList = List()
-                    jobstories.storyList = List()6
+                    jobstories.storyList = List()
         case s"user=${name}" => user.displayItem(name)
         case "q" => println("Bye!")
         case _ => println("Invalid option")

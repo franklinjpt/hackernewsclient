@@ -25,7 +25,7 @@ class StoriesProxy {
     storiesToShow.foreach(story => {
       println("")
       println("----------------------------------------")
-      println(s"$YELLOW${story.title} $RESET (${if(story.url != "") story.url else story.text})")
+      println(s"$YELLOW${story.title} $RESET (${if(story.url != "") story.url else replaceHtmlEntities(story.text)})")
       println(s"$WHITE${story.score} points by ${story.by} | ${story.descendants} comments $RESET")
       if(story.kids != List.empty) {
         println("---------------COMMENTS---------------")
@@ -37,10 +37,28 @@ class StoriesProxy {
           upickle.default.read[Comment](item)
         }).foreach(comment => {
           println(s"$GREEN${comment.by} $RESET")
-          println(s"$WHITE${comment.text} $RESET")
+          println(s"$WHITE${replaceHtmlEntities(comment.text)} $RESET")
           println("")
         })
       }
     })
+  }
+  def replaceHtmlEntities(text: String): String = {
+    text
+      .replaceAll("&#x27;", "'")
+      .replaceAll("&#x2F;", "/")
+      .replaceAll("&quot;", "\"")
+      .replaceAll("&amp;", "&")
+      .replaceAll("&lt;", "<")
+      .replaceAll("&gt;", ">")
+      .replaceAll("<p>", "\n")
+      .replaceAll("<i>", "\u001b[3m")
+      .replaceAll("</i>", "\u001b[0m")
+      .replaceAll("<em>", "\u001b[3m")
+      .replaceAll("</em>", "\u001b[0m")
+      .replaceAll("<b>", "\u001b[1m")
+      .replaceAll("</b>", "\u001b[0m")
+      .replaceAll("<strong>", "\u001b[1m")
+      .replaceAll("</strong>", "\u001b[0m")
   }
 }
