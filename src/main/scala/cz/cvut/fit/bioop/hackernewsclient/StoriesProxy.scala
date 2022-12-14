@@ -23,10 +23,24 @@ class StoriesProxy {
     val sliceTo = page * 10
     val storiesToShow = storyList.slice(sliceFrom, sliceTo)
     storiesToShow.foreach(story => {
+      println("")
       println("----------------------------------------")
       println(s"$YELLOW${story.title} $RESET (${if(story.url != "") story.url else story.text})")
       println(s"$WHITE${story.score} points by ${story.by} | ${story.descendants} comments $RESET")
-      println("")
+      if(story.kids != List.empty) {
+        println("---------------COMMENTS---------------")
+        story.kids.take(1).map(id => {
+          val response = scala.io.Source.fromURL(s"https://hacker-news.firebaseio.com/v0/item/$id.json")
+          val str = response.mkString
+          response.close()
+          val item = ujson.read(str)
+          upickle.default.read[Comment](item)
+        }).foreach(comment => {
+          println(s"$GREEN${comment.by} $RESET")
+          println(s"$WHITE${comment.text} $RESET")
+          println("")
+        })
+      }
     })
   }
 }
