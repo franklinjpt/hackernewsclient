@@ -1,30 +1,22 @@
 package cz.cvut.fit.bioop.hackernewsclient
 import scala.Console._
+import ItemUtils._
 
-class UserInfoProxy{
+class UserInfoProxy {
     val user = new UserInfo()
     var userInfo: List[User] = List()
+
     def displayItem(name: String): Unit = {
       if (userInfo.isEmpty || !userInfo.map(_.id).contains(name)) {
         userInfo = userInfo :+ user.getUserInfo(name)
       }
-      var userToPrint = userInfo.map(user => {
-        if (user.id == name) {
-          println("----------------------------------------")
-          println(s"$YELLOW${user.id} $RESET")
-          println(s"Description: $BLUE${user.about} $RESET")
-          println(s"Created at: $BLUE${unixTimeToDate(user.created)} $RESET")
-          println(s"Karma: $BLUE${user.karma}$RESET")
-          println(s"Submitted items: $BLUE${user.submitted.length}$RESET")
-          println("")
-        }
-      })
+      val userToPrint = if(userInfo.map(_.id).contains(name)) userInfo.filter(_.id == name).head else return println("User not found")
+      println("----------------------------------------")
+      println(s"$YELLOW${userToPrint.id} $RESET")
+      println(s"Description: $WHITE${replaceHtmlEntities(userToPrint.about)}$RESET")
+      println(s"Created at: $WHITE${unixTimeToDate(userToPrint.created)}$RESET")
+      println(s"Karma: $WHITE${userToPrint.karma}$RESET")
+      println(s"Submitted items: $WHITE${userToPrint.submitted.length}$RESET")
+      println("")
     }
-
-  def unixTimeToDate(unixTime: Long): String = {
-    val date = new java.util.Date(unixTime * 1000L)
-    val sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-    sdf.setTimeZone(java.util.TimeZone.getTimeZone("GMT+2"))
-    sdf.format(date)
-  }
 }

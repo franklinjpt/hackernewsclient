@@ -56,6 +56,7 @@ object Main {
                     askstories.storyList = List()
                     showstories.storyList = List()
                     jobstories.storyList = List()
+                    user.userInfo = List()
         case s"user=${name}" => user.displayItem(name)
         case "q" => println("Bye!")
         case _ => println("Invalid option")

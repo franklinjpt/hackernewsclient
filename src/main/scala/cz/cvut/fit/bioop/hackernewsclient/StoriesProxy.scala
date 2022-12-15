@@ -1,5 +1,6 @@
 package cz.cvut.fit.bioop.hackernewsclient
 import scala.Console._
+import ItemUtils._
 
 class StoriesProxy {
   val stories = new Stories()
@@ -36,29 +37,11 @@ class StoriesProxy {
           val item = ujson.read(str)
           upickle.default.read[Comment](item)
         }).foreach(comment => {
-          println(s"$GREEN${comment.by} $RESET")
+          println(s"$GREEN${comment.by}$RESET ${unixTimeToDate(comment.time)}")
           println(s"$WHITE${replaceHtmlEntities(comment.text)} $RESET")
           println("")
         })
       }
     })
-  }
-  def replaceHtmlEntities(text: String): String = {
-    text
-      .replaceAll("&#x27;", "'")
-      .replaceAll("&#x2F;", "/")
-      .replaceAll("&quot;", "\"")
-      .replaceAll("&amp;", "&")
-      .replaceAll("&lt;", "<")
-      .replaceAll("&gt;", ">")
-      .replaceAll("<p>", "\n")
-      .replaceAll("<i>", "\u001b[3m")
-      .replaceAll("</i>", "\u001b[0m")
-      .replaceAll("<em>", "\u001b[3m")
-      .replaceAll("</em>", "\u001b[0m")
-      .replaceAll("<b>", "\u001b[1m")
-      .replaceAll("</b>", "\u001b[0m")
-      .replaceAll("<strong>", "\u001b[1m")
-      .replaceAll("</strong>", "\u001b[0m")
   }
 }

@@ -10,7 +10,11 @@ class UserInfo {
     val response = scala.io.Source.fromURL(s"https://hacker-news.firebaseio.com/v0/user/$name.json")
     val responseStr = response.mkString
     response.close()
-    val user = ujson.read(responseStr)
-    upickle.default.read[User](user)
+    if (responseStr != "null") {
+      val user = ujson.read(responseStr)
+      upickle.default.read[User](user)
+    } else {
+      User()
+    }
   }
 }
