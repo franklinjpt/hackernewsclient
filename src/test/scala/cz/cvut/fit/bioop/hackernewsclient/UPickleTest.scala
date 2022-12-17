@@ -26,4 +26,6 @@ class UPickleTest extends AnyFlatSpec with should.Matchers {
       BoxedInt(4),
       BoxedInt(5))
   }
+  
+  "A Story uPickle"
 }

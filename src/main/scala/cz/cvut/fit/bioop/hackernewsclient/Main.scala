@@ -1,4 +1,6 @@
 package cz.cvut.fit.bioop.hackernewsclient
+import cz.cvut.fit.bioop.hackernewsclient.proxies.{StoriesProxy, UserInfoProxy}
+
 import scala.Console._
 import scala.io.StdIn.readLine
 
