@@ -11,19 +11,33 @@ class StoriesProxy {
   var storyList: List[Story] = List()
 
   def displayItem(name: String, commands: Array[String] = Array()): Unit = {
-        val commandValues = commands.flatMap(l => {
-          val split = l.split("=")
-          if (split.length == 2) {
-            Some(split(0) -> split(1).toInt)
-          } else {
-            None
-          }
-        }).toMap
+
+    val commandValues = commands.flatMap(l => {
+      val split = l.split("=")
+      if (split.length == 2 && split(0) == "page") {
+        Some(split(0) -> split(1).toInt)
+      } else {
+        None
+      }
+    }).toMap
+
+    if(commandValues.isEmpty) {
+      println(s"No page provided or it's written in wrong format")
+      return
+    }
+
+    val page = commandValues.getOrElse("page", 1)
+    if(page < 1 || page > 5) {
+      println("this page does not exist")
+      return
+    }
+
+    println("Page: " + page)
 
     if (storyList.isEmpty) {
       storyList = stories.getStories(name)
     }
-    val page = commandValues.getOrElse("page", 1)
+
     val sliceFrom = (page - 1) * 10
     val sliceTo = page * 10
     val storiesToShow = storyList.slice(sliceFrom, sliceTo)
