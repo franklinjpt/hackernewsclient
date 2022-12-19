@@ -11,6 +11,10 @@ class UserInfoProxy {
     var userInfo: List[User] = List()
 
     def displayItem(name: String): Unit = {
+      if (name == "") {
+        println("No username provided")
+        return
+      }
       if (userInfo.isEmpty || !userInfo.map(_.id).contains(name)) {
         userInfo = userInfo :+ user.getUserInfo(name)
       }

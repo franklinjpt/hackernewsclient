@@ -1,6 +1,6 @@
 package cz.cvut.fit.bioop.hackernewsclient
 
-import cz.cvut.fit.bioop.hackernewsclient.proxies.StoriesProxy
+import cz.cvut.fit.bioop.hackernewsclient.proxies.{StoriesProxy, UserInfoProxy}
 import org.mockito.MockitoSugar.mock
 import org.scalatest.flatspec.AnyFlatSpec
 
@@ -54,6 +54,28 @@ class MainTest extends AnyFlatSpec {
   it should "print 'No page provided or it's written in wrong format' when page is not provided" in {
     val args = Array[String]("top", "page=")
     val expected = "No page provided or it's written in wrong format"
+    val actual = captureOutput(Main.proccessArgs(args)).trim
+    assert(actual == expected)
+  }
+
+  it should "print user info when 'user=<username>' command is provided" in {
+    val args = Array[String]("user=franklin")
+    val userInfo = mock[UserInfoProxy]
+    val expected = captureOutput(userInfo.displayItem("franklin"))
+    val actual = captureOutput(Main.proccessArgs(args))
+    assert(actual.contains(expected))
+  }
+
+  it should "print 'No username provided' when username is not provided" in {
+    val args = Array[String]("user=")
+    val expected = "No username provided"
+    val actual = captureOutput(Main.proccessArgs(args)).trim
+    assert(actual == expected)
+  }
+
+  it should "print 'User not found' when the provided username is not found" in {
+    val args = Array[String]("user=unknown")
+    val expected = "User not found"
     val actual = captureOutput(Main.proccessArgs(args)).trim
     assert(actual == expected)
   }

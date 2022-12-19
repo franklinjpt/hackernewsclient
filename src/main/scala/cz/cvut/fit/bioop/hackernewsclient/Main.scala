@@ -23,6 +23,9 @@ object Main {
       case "top" =>
         val storiesProxy = new StoriesProxy()
         storiesProxy.displayItem("topstories", Array("page=1"))
+      case s"user=${commands}" =>
+        val userInfoProxy = new UserInfoProxy()
+        userInfoProxy.displayItem(commands)
       case _ => println("Unknown command")
     }
   }

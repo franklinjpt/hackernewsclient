@@ -8,12 +8,12 @@ class UserInfo {
   val user: User = User()
 
   def getUserInfo(name: String): User = {
-    println(s"${MAGENTA}First time fetching user info $RESET")
     val response = scala.io.Source.fromURL(s"https://hacker-news.firebaseio.com/v0/user/$name.json")
     val responseStr = response.mkString
     response.close()
     if (responseStr != "null") {
       val user = ujson.read(responseStr)
+      println(s"${MAGENTA}First time fetching user info$RESET")
       upickle.default.read[User](user)
     } else {
       User()
