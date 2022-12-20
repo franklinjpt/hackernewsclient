@@ -1,11 +1,21 @@
 package cz.cvut.fit.bioop.hackernewsclient
 
-import cz.cvut.fit.bioop.hackernewsclient.proxies.{StoriesProxy, UserInfoProxy}
-import org.mockito.MockitoSugar.mock
-import org.scalatest.flatspec.AnyFlatSpec
+import cz.cvut.fit.bioop.hackernewsclient.Main.displayPage
+import cz.cvut.fit.bioop.hackernewsclient.business.{HackerNewsClient, HackerNewsClientProxy}
+import org.mockito.MockitoSugar.{reset}
+import org.scalatest.Matchers
+import org.scalatestplus.mockito.MockitoSugar.mock
+import org.scalatest.{BeforeAndAfter, FlatSpec}
 
+class MainTest extends FlatSpec with Matchers with BeforeAndAfter{
 
-class MainTest extends AnyFlatSpec {
+  val api = mock[HackerNewsClient]
+  val proxy = new HackerNewsClientProxy(api)
+
+  before {
+    reset(api)
+  }
+
   def captureOutput(f: => Unit): String = {
     val out = new java.io.ByteArrayOutputStream()
     Console.withOut(out) {
@@ -28,55 +38,25 @@ class MainTest extends AnyFlatSpec {
     assert(actual == expected)
   }
 
-  it should "print the first top stories when 'top' command is provided" in {
-    val args = Array[String]("top")
-    val topStories = mock[StoriesProxy]
-    val expected = captureOutput(topStories.displayItem("topstories"))
-    val actual = captureOutput(Main.proccessArgs(args))
-    assert(actual.contains(expected))
+  "the method displayPage" should "return an empty list if no page is provided or it's written in the wrong format" in {
+    val result1 = displayPage(Array())
+    assert(result1 == List())
+
+    val result2 = displayPage(Array("foo=1"))
+    assert(result2 == List())
   }
 
-  it should "print the top stories from the page that is provided on 'top <page>'" in {
-    val args = Array[String]("top", "3")
-    val topStories = mock[StoriesProxy]
-    val expected = captureOutput(topStories.displayItem("topstories", Array("3")))
-    val actual = captureOutput(Main.proccessArgs(args))
-    assert(actual.contains(expected))
+  it should "return an empty list if the page is out of range" in {
+    val result1 = displayPage(Array("page=0"))
+    assert(result1 == List())
+
+    val result2 = displayPage(Array("page=100"))
+    assert(result2 == List())
   }
 
-  it should "print 'this page does not exist' when page that does not exist is provided" in {
-    val args = Array[String]("top", "page=100000")
-    val expected = "this page does not exist"
-    val actual = captureOutput(Main.proccessArgs(args)).trim
-    assert(actual == expected)
+  it should "return a list of integers from the correct range for a valid page" in {
+    val result = displayPage(Array("page=2"))
+    assert(result == (10 until 20).toList)
   }
 
-  it should "print 'No page provided or it's written in wrong format' when page is not provided" in {
-    val args = Array[String]("top", "page=")
-    val expected = "No page provided or it's written in wrong format"
-    val actual = captureOutput(Main.proccessArgs(args)).trim
-    assert(actual == expected)
-  }
-
-  it should "print user info when 'user=<username>' command is provided" in {
-    val args = Array[String]("user=franklin")
-    val userInfo = mock[UserInfoProxy]
-    val expected = captureOutput(userInfo.displayItem("franklin"))
-    val actual = captureOutput(Main.proccessArgs(args))
-    assert(actual.contains(expected))
-  }
-
-  it should "print 'No username provided' when username is not provided" in {
-    val args = Array[String]("user=")
-    val expected = "No username provided"
-    val actual = captureOutput(Main.proccessArgs(args)).trim
-    assert(actual == expected)
-  }
-
-  it should "print 'User not found' when the provided username is not found" in {
-    val args = Array[String]("user=unknown")
-    val expected = "User not found"
-    val actual = captureOutput(Main.proccessArgs(args)).trim
-    assert(actual == expected)
-  }
 }

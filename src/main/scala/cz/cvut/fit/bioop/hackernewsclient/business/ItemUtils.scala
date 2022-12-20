@@ -1,4 +1,4 @@
-package cz.cvut.fit.bioop.hackernewsclient.proxies
+package cz.cvut.fit.bioop.hackernewsclient.business
 
 import scala.Console.WHITE
 
