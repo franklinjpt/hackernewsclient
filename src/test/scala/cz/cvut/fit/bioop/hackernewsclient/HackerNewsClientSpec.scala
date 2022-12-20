@@ -57,6 +57,15 @@ class HackerNewsClientSpec extends FlatSpec with Matchers with BeforeAndAfter {
     assert(test2 != List())
   }
 
+  it should "not fetch best stories twice" in {
+    val stories = new HackerNewsClientProxy(new HackerNewsClient())
+    val test1 = stories.cacheBestStories
+    stories.bestStories()
+    val test2 = stories.cacheBestStories
+    assert(test1 == List())
+    assert(test2 != List())
+  }
+
 
   it should "fetch a new list of top story IDs after the cache has expired" in {
     // Create a mock HackerNewsClient that returns a fixed list of top story IDs
@@ -73,6 +82,23 @@ class HackerNewsClientSpec extends FlatSpec with Matchers with BeforeAndAfter {
     val topStories2 = proxy.topStories()
 
     topStories1 should not contain theSameElementsAs(topStories2)
+  }
+
+  it should "fetch a new list of best story IDs after the cache has expired" in {
+    // Create a mock HackerNewsClient that returns a fixed list of best story IDs
+    when(proxy.bestStories()).thenReturn(List(1, 2, 3))
+
+    // Set the maxCacheAge to a very small value so that the cache will expire quickly
+    proxy.maxCacheAge = 1
+
+    val bestStories1 = proxy.bestStories()
+    // Wait for the cache to expire
+    Thread.sleep(10)
+    when(proxy.bestStories()).thenReturn(List(1, 2, 4))
+
+    val bestStories2 = proxy.bestStories()
+
+    bestStories1 should not contain theSameElementsAs(bestStories2)
   }
 
   it should "fetch a new user after the cache has expired" in {

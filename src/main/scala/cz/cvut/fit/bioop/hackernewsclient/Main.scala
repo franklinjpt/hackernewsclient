@@ -44,17 +44,17 @@ object Main {
   def displayHelp(): Unit = {
     println(s"${BLUE}Welcome to Hacker News Client!!!!!$RESET")
     println(s"${GREEN}This CLI allows you to browse Hacker News stories and user profiles.")
-    println(s"${GREEN}This application fetch the first 50 stories from top stories,best stories and then caches them.$RESET")
-    println(s"${GREEN}You can browse the stories by pages, each page contains 10 stories.$RESET")
-    println(s"${BOLD}The last page is number 5.$RESET")
-    println(s"${GREEN}All the items have time to live, by default is 15 seconds.$RESET")
+    println(s"This application fetch the first 50 stories from top stories,best stories and then caches them.")
+    println(s"You can browse the stories by pages, each page contains 10 stories.")
+    println(s"The last page is number 5.")
+    println(s"All the items have time to live, by default is 15 seconds.$RESET")
     println(s"${RED}Instructions: $RESET")
     println(s"${GREEN}To display top stories you can write in the CLI 'top' (by default it will display page 1)")
-    println(s"${GREEN}To display a different page you can type page=2, page=3, etc. for instance, to display page 3 from Best stories:")
+    println(s"To display a different page you can type page=2, page=3, etc. for instance, to display page 3 from Best stories:")
     println("best page=3")
-    println(s"${GREEN}To change the time to live you can type ttl=10000, for instance, to display page 1 from Best stories with time to live 10 seconds:")
+    println(s"To change the time to live you can type ttl=10000, for instance, to display page 1 from Best stories with time to live 10 seconds:")
     println("best page=1 ttl=10000")
-    println(s"${GREEN}To display user profile you can type \"user\" and the name of the user (e.g. user=pg).$RESET")
+    println(s"To display user profile you can type \"user\" and the name of the user (e.g. user=pg).$RESET")
   }
 
   def proccessArgs(args: Array[String]): Unit = {
@@ -78,13 +78,23 @@ object Main {
           story.display()
         })
       case "top" =>
-        println("page=1")
-        api.topStories().take(11).foreach(id => {
+        val fromToAndTTL = displayPage(Array("page=1"))
+        if (fromToAndTTL.isEmpty) return
+        api.maxCacheAge = fromToAndTTL.last
+        api.topStories().slice(fromToAndTTL.head, fromToAndTTL.init.last).foreach(id => {
           val story = api.story(id)
           story.display()
         })
       case s"best ${commands}" =>
         val fromToAndTTL = displayPage(commands.split(" "))
+        if (fromToAndTTL.isEmpty) return
+        api.maxCacheAge = fromToAndTTL.last
+        api.bestStories().slice(fromToAndTTL.head, fromToAndTTL.init.last).foreach(id => {
+          val story = api.story(id)
+          story.display()
+        })
+      case "best" =>
+        val fromToAndTTL = displayPage(Array("page=1"))
         if (fromToAndTTL.isEmpty) return
         api.maxCacheAge = fromToAndTTL.last
         api.bestStories().slice(fromToAndTTL.head, fromToAndTTL.init.last).foreach(id => {

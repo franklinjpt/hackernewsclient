@@ -60,4 +60,10 @@ class MainTest extends FlatSpec with Matchers with BeforeAndAfter{
     assert(result == expected :+ 15000)
   }
 
+  it should "return a ttl of 15000 by default" in {
+    val result = displayPage(Array("page=1"))
+    val expected = (0 until 10).toList
+    assert(result == expected :+ 15000)
+  }
+
 }

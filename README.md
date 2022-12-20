@@ -42,7 +42,11 @@ This command compiles the entire code, runs the tests and produces a jar includi
 Same as building, the project can be run through the IntelliJ Idea; by running the sbt command:
 
 ```
-sbt "run top-stories --page=2"
+sbt "run top page=2"
+```
+
+```
+sbt "run help"
 ```
 
 or, after building with the `sbt assembly`, by running the prepared executable script:
