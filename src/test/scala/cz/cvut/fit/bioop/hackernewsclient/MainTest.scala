@@ -56,7 +56,8 @@ class MainTest extends FlatSpec with Matchers with BeforeAndAfter{
 
   it should "return a list of integers from the correct range for a valid page" in {
     val result = displayPage(Array("page=2"))
-    assert(result == (10 until 20).toList)
+    val expected = (10 until 20).toList
+    assert(result == expected :+ 15000)
   }
 
 }

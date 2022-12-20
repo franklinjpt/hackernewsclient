@@ -15,6 +15,7 @@ class HackerNewsClient extends HackerNewsApi {
 
   override def topStories(): List[Int] = fetch[List[Int]]("topstories").take(50)
 
+  override def bestStories(): List[Int] = fetch[List[Int]]("beststories").take(50)
   override def story(id: Int): Story = fetch[Story](s"item/$id")
 
   override def user(id: String): User = fetch[User](s"user/$id")
