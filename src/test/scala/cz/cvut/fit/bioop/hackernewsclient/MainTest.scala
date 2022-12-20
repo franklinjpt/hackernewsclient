@@ -2,18 +2,18 @@ package cz.cvut.fit.bioop.hackernewsclient
 
 import cz.cvut.fit.bioop.hackernewsclient.Main.displayPage
 import cz.cvut.fit.bioop.hackernewsclient.business.{HackerNewsClient, HackerNewsClientProxy}
-import org.mockito.MockitoSugar.{reset}
+import org.mockito.MockitoSugar.{reset, when}
 import org.scalatest.Matchers
 import org.scalatestplus.mockito.MockitoSugar.mock
 import org.scalatest.{BeforeAndAfter, FlatSpec}
 
 class MainTest extends FlatSpec with Matchers with BeforeAndAfter{
 
-  val api = mock[HackerNewsClient]
-  val proxy = new HackerNewsClientProxy(api)
+//  val api = mock[HackerNewsClient]
+  val proxy = mock[HackerNewsClientProxy]
 
   before {
-    reset(api)
+    reset(proxy)
   }
 
   def captureOutput(f: => Unit): String = {
@@ -64,6 +64,18 @@ class MainTest extends FlatSpec with Matchers with BeforeAndAfter{
     val result = displayPage(Array("page=1"))
     val expected = (0 until 10).toList
     assert(result == expected :+ 15000)
+  }
+
+  "clear-cache" should "clear the cache" in {
+    when(proxy.cacheUsers).thenReturn(Map())
+    when(proxy.cacheStory).thenReturn(Map())
+    when(proxy.cacheTopStories).thenReturn(List())
+    when(proxy.cacheBestStories).thenReturn(List())
+
+    proxy.cacheUsers should be (Map())
+    proxy.cacheStory should be (Map())
+    proxy.cacheTopStories should be (List())
+    proxy.cacheBestStories should be (List())
   }
 
 }

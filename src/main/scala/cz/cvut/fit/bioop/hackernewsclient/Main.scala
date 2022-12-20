@@ -110,6 +110,12 @@ object Main {
           return
         }
         api.user(commands).display()
+      case "clear-cache" =>
+        api.cacheUsers = Map()
+        api.cacheTopStories = List()
+        api.cacheBestStories = List()
+        api.cacheStory = Map()
+        println("Cache cleared")
       case "help" => displayHelp()
       case _ => println("Unknown command")
     }
