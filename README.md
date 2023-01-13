@@ -1,11 +1,7 @@
 # Hacker News Client
 
-[![pipeline status](https://gitlab.fit.cvut.cz/BI-OOP/B201/hackernewsclient/badges/master/pipeline.svg)](https://gitlab.fit.cvut.cz/BI-OOP/B201/hackernewsclient/commits/master)
-[![coverage report](https://gitlab.fit.cvut.cz/BI-OOP/B201/hackernewsclient/badges/master/coverage.svg)](https://gitlab.fit.cvut.cz/BI-OOP/B201/hackernewsclient/commits/master)
+This is a template repository for the [Hacker News Client](https://courses.fit.cvut.cz/BI-OOP/projects/hackernews-cli.html) project.
 
-This is a template repository for the [Hacker News Client](https://courses.fit.cvut.cz/BI-OOP/projects/hackernews-cli.html) project. Feel free to fork it and leverage it as a starting point for your solution.
-
-Before starting work on the project, make sure you can compile and run the prepared example code and tests.
 
 The full project assignment can be found on the official [courses page](https://courses.fit.cvut.cz/BI-OOP/projects/hackernews-cli.html).
 
@@ -54,7 +50,3 @@ or, after building with the `sbt assembly`, by running the prepared executable s
 ```
 ./hnc top-stories --page=2
 ```
-
-## Support
-
-Please contact Peter Matta via MS Teams or directly by email ([mattapet@fit.cvut.cz](mailto:mattapet.fit.cvut.cz)) in case you run into any issues or have any questions.
